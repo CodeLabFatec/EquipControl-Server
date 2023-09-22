@@ -8,7 +8,7 @@ export interface IEquipment {
     serial: string;
     notes?: string;
     files?: IFile[];
-    isActive?: boolean;
+    isActive: boolean;
     created_at: Date;
     updated_at: Date;
 }

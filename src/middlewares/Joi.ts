@@ -52,6 +52,9 @@ export const Schemas = {
                 .allow(null)
                 .default([]),
             isActive: Joi.boolean().optional()
+        }),
+        updateStatus: Joi.object<IEquipment>({
+            isActive: Joi.boolean().required()
         })
     }
 };

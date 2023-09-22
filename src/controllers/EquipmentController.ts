@@ -63,4 +63,28 @@ const deleteEquipment = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-export default { createEquipment, findEquipmentById, listAllEquipments, updateEquipment, deleteEquipment };
+const changeEquipmentStatus = (req: Request, res: Response, next: NextFunction) => {
+    const equipmentId = req.params.equipmentId;
+    const isActive = req.body.isActive;
+
+    if (isActive === undefined || isActive === null) {
+        return res.status(400).json({ message: 'isActive is required for this operation' });
+    }
+
+    return Equipment.findById(equipmentId)
+        .then((equipment) => {
+            if (equipment) {
+                equipment.isActive = isActive;
+
+                return equipment
+                    .save()
+                    .then((equipment) => res.status(201).json({ equipment }))
+                    .catch((error) => res.status(500).json({ error }));
+            } else {
+                return res.status(404).json({ message: 'Equipment not found' });
+            }
+        })
+        .catch((error) => res.status(500).json({ error }));
+};
+
+export default { createEquipment, findEquipmentById, listAllEquipments, updateEquipment, deleteEquipment, changeEquipmentStatus };
