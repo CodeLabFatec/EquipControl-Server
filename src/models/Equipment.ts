@@ -2,8 +2,8 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IEquipment {
     name: string;
-    latitude: number;
-    longitude: number;
+    latitude: string;
+    longitude: string;
     domain: string;
     serial: string;
     notes?: string;
