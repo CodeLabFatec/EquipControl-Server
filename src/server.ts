@@ -34,7 +34,7 @@ const StartServer = () => {
     });
 
     router.use(express.urlencoded({ extended: true }));
-    router.use(express.json());
+    router.use(express.json({ limit: '50mb' }));
 
     /** Rules of our API */
     router.use((req, res, next) => {
