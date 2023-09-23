@@ -2,8 +2,8 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IEquipment {
     name: string;
-    latitude: number;
-    longitude: number;
+    latitude: string;
+    longitude: string;
     domain: string;
     serial: string;
     notes?: string;
@@ -24,8 +24,8 @@ export interface IFileModel extends IFile, Document {}
 const EquipmentSchema: Schema = new Schema(
     {
         name: { type: String, require: true },
-        latitude: { type: Number, require: true },
-        longitude: { type: Number, require: true },
+        latitude: { type: String, require: true },
+        longitude: { type: String, require: true },
         domain: { type: String, require: true },
         serial: { type: String, require: true },
         notes: { type: String, require: false },
