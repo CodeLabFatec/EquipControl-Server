@@ -26,7 +26,7 @@ export const Schemas = {
             longitude: Joi.string().required(),
             domain: Joi.string().required(),
             serial: Joi.string().required(),
-            notes: Joi.string().optional(),
+            notes: Joi.string().allow('').optional(),
             files: Joi.array()
                 .items({
                     base64: Joi.string().required(),
@@ -43,7 +43,7 @@ export const Schemas = {
             longitude: Joi.string().required(),
             domain: Joi.string().required(),
             serial: Joi.string().required(),
-            notes: Joi.string().optional(),
+            notes: Joi.string().allow('').optional(),
             files: Joi.array()
                 .items({
                     base64: Joi.string().required(),
