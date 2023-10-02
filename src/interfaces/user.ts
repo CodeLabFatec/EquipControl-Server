@@ -9,7 +9,7 @@ export default interface IUser extends Document {
     phone: string;
     registration: string;
     cpf: string;
-    image: IFile;
+    image?: IFile;
 }
 
 export interface IFile {
