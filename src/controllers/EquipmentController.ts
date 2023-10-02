@@ -19,7 +19,12 @@ const createEquipment = (req: Request, res: Response, next: NextFunction) => {
     return equipment
         .save()
         .then((equipment) => res.status(201).json({ equipment }))
-        .catch((error) => res.status(500).json({ error }));
+        .catch((error) =>
+            res.status(500).json({
+                message: error.message,
+                error
+            })
+        );
 };
 
 const findEquipmentById = (req: Request, res: Response, next: NextFunction) => {
@@ -27,13 +32,23 @@ const findEquipmentById = (req: Request, res: Response, next: NextFunction) => {
 
     return Equipment.findById(equipmentId)
         .then((equipment) => (equipment ? res.status(200).json({ equipment }) : res.status(404).json({ message: 'Equipment not found' })))
-        .catch((error) => res.status(500).json({ error }));
+        .catch((error) =>
+            res.status(500).json({
+                message: error.message,
+                error
+            })
+        );
 };
 
 const listAllEquipments = (req: Request, res: Response, next: NextFunction) => {
     return Equipment.find()
         .then((equipments) => res.status(200).json({ equipments }))
-        .catch((error) => res.status(500).json({ error }));
+        .catch((error) =>
+            res.status(500).json({
+                message: error.message,
+                error
+            })
+        );
 };
 
 const updateEquipment = (req: Request, res: Response, next: NextFunction) => {
@@ -47,12 +62,22 @@ const updateEquipment = (req: Request, res: Response, next: NextFunction) => {
                 return equipment
                     .save()
                     .then((equipment) => res.status(201).json({ equipment }))
-                    .catch((error) => res.status(500).json({ error }));
+                    .catch((error) =>
+                        res.status(500).json({
+                            message: error.message,
+                            error
+                        })
+                    );
             } else {
                 return res.status(404).json({ message: 'Equipment not found' });
             }
         })
-        .catch((error) => res.status(500).json({ error }));
+        .catch((error) =>
+            res.status(500).json({
+                message: error.message,
+                error
+            })
+        );
 };
 
 const deleteEquipment = (req: Request, res: Response, next: NextFunction) => {
@@ -60,7 +85,12 @@ const deleteEquipment = (req: Request, res: Response, next: NextFunction) => {
 
     return Equipment.findByIdAndDelete(equipmentId)
         .then((equipment) => (equipment ? res.status(201).json({ equipment, message: 'Equipment Deleted Successfully' }) : res.status(404).json({ message: 'Equipment not found' })))
-        .catch((error) => res.status(500).json({ error }));
+        .catch((error) =>
+            res.status(500).json({
+                message: error.message,
+                error
+            })
+        );
 };
 
 const changeEquipmentStatus = (req: Request, res: Response, next: NextFunction) => {
@@ -79,12 +109,22 @@ const changeEquipmentStatus = (req: Request, res: Response, next: NextFunction) 
                 return equipment
                     .save()
                     .then((equipment) => res.status(201).json({ equipment }))
-                    .catch((error) => res.status(500).json({ error }));
+                    .catch((error) =>
+                        res.status(500).json({
+                            message: error.message,
+                            error
+                        })
+                    );
             } else {
                 return res.status(404).json({ message: 'Equipment not found' });
             }
         })
-        .catch((error) => res.status(500).json({ error }));
+        .catch((error) =>
+            res.status(500).json({
+                message: error.message,
+                error
+            })
+        );
 };
 
 export default { createEquipment, findEquipmentById, listAllEquipments, updateEquipment, deleteEquipment, changeEquipmentStatus };
