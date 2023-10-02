@@ -28,7 +28,9 @@ const login = (req: Request, res: Response, next: NextFunction) => {
                 });
             }
 
-            bcryptjs.compare(password, users[0].password, (error, result) => {
+            const user = users[0];
+
+            bcryptjs.compare(password, user.password, (error, result) => {
                 if (error) {
                     Logging.error({ NAMESPACE, message: error.message, error });
 
@@ -37,7 +39,7 @@ const login = (req: Request, res: Response, next: NextFunction) => {
                         error
                     });
                 } else if (result) {
-                    return signJWT(users[0], (_error, token) => {
+                    return signJWT(user, (_error, token) => {
                         if (_error) {
                             Logging.error({ NAMESPACE, message: 'Unable to sign token', _error });
 
@@ -46,9 +48,11 @@ const login = (req: Request, res: Response, next: NextFunction) => {
                                 error: _error
                             });
                         } else if (token) {
+                            const { password, ...userWithoutPassword } = (user as any)._doc;
                             return res.status(200).json({
                                 message: 'User successfully authenticated',
-                                token
+                                token,
+                                user: userWithoutPassword
                             });
                         }
                     });
@@ -95,10 +99,10 @@ const findUserById = async (req: Request, res: Response, next: NextFunction) => 
 const register = async (req: Request, res: Response, next: NextFunction) => {
     let { name, lastName, email, username, password, phone, registration, cpf, image } = req.body;
 
-    User.find({ username }).then((user) => {
+    User.find({ $or: [{ username }, { email }] }).then((user) => {
         if (user.length !== 0) {
             return res.status(500).json({
-                message: 'Username already exist'
+                message: 'Username or email already exist'
             });
         } else {
             bcryptjs.hash(password, 10, (hashError, hash) => {

@@ -5,6 +5,7 @@ import { config } from './config/config';
 import Logging from './library/Logging';
 import equipmentRoutes from './routes/Equipment';
 import userRoutes from './routes/User';
+import domainRoutes from './routes/Domain';
 
 const router = express();
 
@@ -53,6 +54,7 @@ const StartServer = () => {
     /** Routes */
     router.use('/equipment', equipmentRoutes);
     router.use('/user', userRoutes);
+    router.use('/domain', domainRoutes);
 
     /** Healthcheck */
     router.get('/ping', (req, res, next) => res.status(200).json({ hello: 'world' }));
