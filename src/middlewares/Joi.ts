@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import Logging from '../library/Logging';
 import IUser from '../interfaces/user';
 import IEquipment from '../interfaces/equipment';
-import IDomain from '@/interfaces/domain';
+import IDomain from '../interfaces/domain';
 
 export const ValidateJoi = (schema: ObjectSchema) => {
     return async (req: Request, res: Response, next: NextFunction) => {
