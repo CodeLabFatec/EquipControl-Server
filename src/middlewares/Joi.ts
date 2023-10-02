@@ -1,8 +1,8 @@
 import Joi, { ObjectSchema } from 'joi';
 import { NextFunction, Request, Response } from 'express';
-import { IEquipment, IFile } from '../models/Equipment';
 import Logging from '../library/Logging';
-import { IUser } from '@/models/User';
+import IUser from '../interfaces/user';
+import IEquipment from '../interfaces/equipment';
 
 export const ValidateJoi = (schema: ObjectSchema) => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -63,19 +63,23 @@ export const Schemas = {
             name: Joi.string().required(),
             lastName: Joi.string().required(),
             email: Joi.string().required(),
+            username: Joi.string().required(),
             password: Joi.string().required(),
             phone: Joi.string().required(),
             registration: Joi.string().required(),
-            cpf: Joi.string().required()
+            cpf: Joi.string().required(),
+            image: Joi.object().optional()
         }),
         update: Joi.object<IUser>({
             name: Joi.string().optional(),
             lastName: Joi.string().optional(),
             email: Joi.string().optional(),
+            username: Joi.string().optional(),
             password: Joi.string().optional(),
             phone: Joi.string().optional(),
             registration: Joi.string().optional(),
-            cpf: Joi.string().optional()
+            cpf: Joi.string().optional(),
+            image: Joi.object().optional()
         }).min(1)
     }
 };

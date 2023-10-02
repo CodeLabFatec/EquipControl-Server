@@ -1,26 +1,17 @@
-import mongoose, { Document, Schema } from 'mongoose';
-
-export interface IUser {
-    name: string;
-    lastName: string;
-    email: string;
-    password: string;
-    phone: string;
-    registration: string;
-    cpf: string;
-}
-
-export interface IUserModel extends IUser, Document {}
+import IUser from '../interfaces/user';
+import mongoose, { Schema } from 'mongoose';
 
 const UserSchema: Schema = new Schema(
     {
         name: { type: String, require: true },
         lastName: { type: String, require: true },
         email: { type: String, require: true },
+        username: { type: String, require: true, unique: true },
         password: { type: String, require: true },
         phone: { type: String, require: true },
         registration: { type: String, require: true },
-        cpf: { type: String, require: true }
+        cpf: { type: String, require: true },
+        image: { type: Object, required: false }
     },
     {
         versionKey: false,
@@ -28,4 +19,14 @@ const UserSchema: Schema = new Schema(
     }
 );
 
-export default mongoose.model<IUserModel>('User', UserSchema);
+UserSchema.index(
+    {
+        username: 1,
+        email: 1
+    },
+    {
+        unique: true
+    }
+);
+
+export default mongoose.model<IUser>('User', UserSchema);

@@ -1,25 +1,5 @@
-import mongoose, { Document, Schema } from 'mongoose';
-
-export interface IEquipment {
-    name: string;
-    latitude: string;
-    longitude: string;
-    domain: string;
-    serial: string;
-    notes?: string;
-    files?: IFile[];
-    isActive: boolean;
-    created_at: Date;
-    updated_at: Date;
-}
-
-export interface IFile {
-    base64: string;
-    type: string;
-}
-
-export interface IEquipmentModel extends IEquipment, Document {}
-export interface IFileModel extends IFile, Document {}
+import IEquipment from '../interfaces/equipment';
+import mongoose, { Schema } from 'mongoose';
 
 const EquipmentSchema: Schema = new Schema(
     {
@@ -49,4 +29,4 @@ const FileSchema: Schema = new Schema(
     }
 );
 
-export default mongoose.model<IEquipmentModel>('Equipment', EquipmentSchema);
+export default mongoose.model<IEquipment>('Equipment', EquipmentSchema);
