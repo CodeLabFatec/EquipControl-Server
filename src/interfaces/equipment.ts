@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import IUser from './user';
 
 export default interface IEquipment extends Document {
     name: string;
@@ -11,9 +12,15 @@ export default interface IEquipment extends Document {
     isActive: boolean;
     created_at: Date;
     updated_at: Date;
+    created_by: ICreatedBy;
 }
 
 export interface IFile {
     base64: string;
     type: string;
+}
+
+export interface ICreatedBy {
+    id: string;
+    name: string;
 }

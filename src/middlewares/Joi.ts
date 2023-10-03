@@ -2,7 +2,7 @@ import Joi, { ObjectSchema } from 'joi';
 import { NextFunction, Request, Response } from 'express';
 import Logging from '../library/Logging';
 import IUser from '../interfaces/user';
-import IEquipment from '../interfaces/equipment';
+import IEquipment, { ICreatedBy } from '../interfaces/equipment';
 import IDomain from '../interfaces/domain';
 
 export const ValidateJoi = (schema: ObjectSchema) => {
@@ -36,7 +36,11 @@ export const Schemas = {
                 .empty(Joi.array().length(0))
                 .allow(null)
                 .default([]),
-            isActive: Joi.boolean().optional().default(true)
+            isActive: Joi.boolean().optional().default(true),
+            created_by: Joi.object<ICreatedBy>({
+                id: Joi.string().required(),
+                name: Joi.string().optional()
+            }).required()
         }),
         update: Joi.object<IEquipment>({
             name: Joi.string().required(),
