@@ -10,7 +10,8 @@ const EquipmentSchema: Schema = new Schema(
         serial: { type: String, require: true },
         notes: { type: String, require: false },
         files: { type: Array, require: false },
-        isActive: { type: Boolean, default: true }
+        isActive: { type: Boolean, default: true },
+        created_by: { type: Object, required: true }
     },
     {
         versionKey: false,

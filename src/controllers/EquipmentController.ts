@@ -1,9 +1,16 @@
+import User from '../models/User';
 import Equipment from '../models/Equipment';
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 
-const createEquipment = (req: Request, res: Response, next: NextFunction) => {
-    const { name, latitude, longitude, domain, serial, notes, files } = req.body;
+const createEquipment = async (req: Request, res: Response, next: NextFunction) => {
+    const { name, latitude, longitude, domain, serial, notes, files, created_by } = req.body;
+
+    const createdByUser = await User.findOne({ _id: created_by.id }).select('-password');
+
+    if (!createdByUser) {
+        return res.status(404).json({ message: 'User not found' });
+    }
 
     const equipment = new Equipment({
         _id: new mongoose.Types.ObjectId(),
@@ -13,7 +20,11 @@ const createEquipment = (req: Request, res: Response, next: NextFunction) => {
         domain,
         serial,
         notes,
-        files
+        files,
+        created_by: {
+            id: created_by.id,
+            name: `${createdByUser.name} ${createdByUser.lastName}`
+        }
     });
 
     return equipment
@@ -31,7 +42,9 @@ const findEquipmentById = (req: Request, res: Response, next: NextFunction) => {
     const equipmentId = req.params.equipmentId;
 
     return Equipment.findById(equipmentId)
-        .then((equipment) => (equipment ? res.status(200).json({ equipment }) : res.status(404).json({ message: 'Equipment not found' })))
+        .then(async (equipment) => {
+            equipment ? res.status(200).json({ equipment }) : res.status(404).json({ message: 'Equipment not found' });
+        })
         .catch((error) =>
             res.status(500).json({
                 message: error.message,
