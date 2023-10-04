@@ -30,22 +30,22 @@ const login = (req: Request, res: Response, next: NextFunction) => {
 
             const user = users[0];
 
-            bcryptjs.compare(password, user.password, (error, result) => {
-                if (error) {
-                    Logging.error({ NAMESPACE, message: error.message, error });
+            bcryptjs.compare(password, user.password, (err, result) => {
+                if (err) {
+                    Logging.error({ NAMESPACE, message: err.message, err });
 
                     return res.status(401).json({
                         message: 'User unauthorized',
-                        error
+                        error: err
                     });
                 } else if (result) {
-                    return signJWT(user, (_error, token) => {
-                        if (_error) {
-                            Logging.error({ NAMESPACE, message: 'Unable to sign token', _error });
+                    return signJWT(user, (error, token) => {
+                        if (error) {
+                            Logging.error({ NAMESPACE, message: 'Unable to sign token', error });
 
                             return res.status(401).json({
                                 message: 'User unauthorized',
-                                error: _error
+                                error
                             });
                         } else if (token) {
                             const { password, ...userWithoutPassword } = (user as any)._doc;
@@ -54,7 +54,17 @@ const login = (req: Request, res: Response, next: NextFunction) => {
                                 token,
                                 user: userWithoutPassword
                             });
+                        } else {
+                            return res.status(401).json({
+                                message: 'User unauthorized',
+                                error: 'An error occurried when tried to signJWT'
+                            });
                         }
+                    });
+                } else {
+                    return res.status(401).json({
+                        message: 'User unauthorized',
+                        error: 'Incorrect password'
                     });
                 }
             });
