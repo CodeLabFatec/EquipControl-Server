@@ -1,17 +1,22 @@
-import { config } from '../config/config';
 import Logging from '../library/Logging';
 import { Request, Response, NextFunction } from 'express-serve-static-core';
 import jwt from 'jsonwebtoken';
 
 const NAMESPACE = 'Authorization';
 
-const extractJWT = (req: Request, res: Response, next: NextFunction) => {
-    Logging.info({ NAMESPACE, message: 'Validating Token' });
+const extractBiometricJWT = (req: Request, res: Response, next: NextFunction) => {
+    Logging.info({ NAMESPACE, message: 'Validating Biometric Token' });
 
-    let token = req.headers.authorization?.split(' ')[1];
+    const token = req.headers.authorization?.split(' ')[1];
+
+    const biometricSecret = req.params.biometricSecret?.toString() ?? null;
+
+    if (!biometricSecret) {
+        return res.status(400).json({ message: 'Biometric Secret is required for this operation' });
+    }
 
     if (token) {
-        jwt.verify(token, config.token.secret, (error, decoded) => {
+        jwt.verify(token, biometricSecret, (error, decoded) => {
             if (error) {
                 res.status(404).json({
                     message: error.message,
@@ -29,4 +34,4 @@ const extractJWT = (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-export default extractJWT;
+export default extractBiometricJWT;
