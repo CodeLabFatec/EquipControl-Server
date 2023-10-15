@@ -145,7 +145,7 @@ const findUserById = async (req: Request, res: Response, next: NextFunction) => 
 };
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
-    let { name, lastName, email, username, password, phone, registration, cpf, image } = req.body;
+    let { name, lastName, email, username, password, phone, registration, cpf, image, isAdmin } = req.body;
 
     User.find({ $or: [{ username }, { email }] }).then((user) => {
         if (user.length !== 0) {
@@ -165,7 +165,8 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
                 phone,
                 registration,
                 cpf,
-                image
+                image,
+                isAdmin
             });
 
             return user
@@ -185,15 +186,16 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.userId;
 
     return User.findById(userId)
-        .select('-password')
         .then((user) => {
             if (user) {
                 const { password } = req.body;
 
                 user.set(req.body);
 
-                if (password !== null || password !== '') {
+                if (password !== null && password !== '' && password !== undefined) {
                     user.password = encryptPass(password, config.token.secret);
+                } else {
+                    user.password = user.password;
                 }
 
                 return user

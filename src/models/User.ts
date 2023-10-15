@@ -11,7 +11,8 @@ const UserSchema: Schema = new Schema(
         phone: { type: String, require: true },
         registration: { type: String, require: true },
         cpf: { type: String, require: true },
-        image: { type: Object, required: false }
+        image: { type: Object, required: false },
+        isAdmin: { type: Boolean, require: true }
     },
     {
         versionKey: false,

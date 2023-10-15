@@ -10,6 +10,7 @@ export default interface IUser extends Document {
     registration: string;
     cpf: string;
     image?: IFile;
+    isAdmin: boolean;
 }
 
 export interface IFile {

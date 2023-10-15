@@ -73,7 +73,8 @@ export const Schemas = {
             phone: Joi.string().required(),
             registration: Joi.string().required(),
             cpf: Joi.string().required(),
-            image: Joi.object().optional()
+            image: Joi.object().optional(),
+            isAdmin: Joi.boolean().required()
         }),
         update: Joi.object<IUser>({
             name: Joi.string().optional(),
@@ -84,7 +85,8 @@ export const Schemas = {
             phone: Joi.string().optional(),
             registration: Joi.string().optional(),
             cpf: Joi.string().optional(),
-            image: Joi.object().optional()
+            image: Joi.object().optional(),
+            isAdmin: Joi.boolean().required()
         }).min(1)
     },
     domain: {

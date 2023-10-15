@@ -10,7 +10,7 @@ const extractBiometricJWT = (req: Request, res: Response, next: NextFunction) =>
     const token = req.headers.authorization?.split(' ')[1];
 
     const biometricSecret = req.params.biometricSecret?.toString() ?? null;
-
+    
     if (!biometricSecret) {
         return res.status(400).json({ message: 'Biometric Secret is required for this operation' });
     }
