@@ -2,6 +2,7 @@ import User from '../models/User';
 import Equipment from '../models/Equipment';
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
+import Domain from '../models/Domain';
 
 const createEquipment = async (req: Request, res: Response, next: NextFunction) => {
     const { name, latitude, longitude, domain, serial, notes, files, created_by } = req.body;
@@ -12,12 +13,18 @@ const createEquipment = async (req: Request, res: Response, next: NextFunction) 
         return res.status(404).json({ message: 'User not found' });
     }
 
+    const equipmentDomain = await Domain.findById(domain);
+
+    if (!equipmentDomain) {
+        return res.status(404).json({ message: 'Domain not found' });
+    }
+
     const equipment = new Equipment({
         _id: new mongoose.Types.ObjectId(),
         name,
         latitude,
         longitude,
-        domain,
+        equipmentDomain,
         serial,
         notes,
         files,
@@ -68,9 +75,20 @@ const updateEquipment = (req: Request, res: Response, next: NextFunction) => {
     const equipmentId = req.params.equipmentId;
 
     return Equipment.findById(equipmentId)
-        .then((equipment) => {
+        .then(async (equipment) => {
             if (equipment) {
+                const { domain } = req.body;
+
                 equipment.set(req.body);
+
+                if (domain) {
+                    const equipmentDomain = await Domain.findById(domain);
+                    if (!equipmentDomain) {
+                        return res.status(404).json({ message: 'Domain not found' });
+                    }
+
+                    equipment.domain = equipmentDomain;
+                }
 
                 return equipment
                     .save()

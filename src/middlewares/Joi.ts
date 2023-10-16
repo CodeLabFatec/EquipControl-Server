@@ -43,11 +43,11 @@ export const Schemas = {
             }).required()
         }),
         update: Joi.object<IEquipment>({
-            name: Joi.string().required(),
-            latitude: Joi.string().required(),
-            longitude: Joi.string().required(),
-            domain: Joi.string().required(),
-            serial: Joi.string().required(),
+            name: Joi.string().optional(),
+            latitude: Joi.string().optional(),
+            longitude: Joi.string().optional(),
+            domain: Joi.string().optional(),
+            serial: Joi.string().optional(),
             notes: Joi.string().allow('').optional(),
             files: Joi.array()
                 .items({
@@ -60,7 +60,7 @@ export const Schemas = {
             isActive: Joi.boolean().optional()
         }),
         updateStatus: Joi.object<IEquipment>({
-            isActive: Joi.boolean().required()
+            isActive: Joi.boolean().optional()
         })
     },
     user: {
@@ -93,7 +93,7 @@ export const Schemas = {
         create: Joi.object<IDomain>({
             name: Joi.string().required()
         }),
-        update: Joi.object<IUser>({
+        update: Joi.object<IDomain>({
             name: Joi.string().optional()
         }).min(1)
     }

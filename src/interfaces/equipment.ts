@@ -1,11 +1,12 @@
 import { Document } from 'mongoose';
 import IUser from './user';
+import IDomain from './domain';
 
 export default interface IEquipment extends Document {
     name: string;
     latitude: string;
     longitude: string;
-    domain: string;
+    domain: IDomain;
     serial: string;
     notes?: string;
     files?: IFile[];
