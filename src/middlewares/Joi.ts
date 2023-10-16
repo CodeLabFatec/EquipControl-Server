@@ -1,8 +1,9 @@
 import Joi, { ObjectSchema } from 'joi';
 import { NextFunction, Request, Response } from 'express';
-import { IEquipment, IFile } from '../models/Equipment';
 import Logging from '../library/Logging';
-import { IUser } from '@/models/User';
+import IUser from '../interfaces/user';
+import IEquipment, { ICreatedBy } from '../interfaces/equipment';
+import IDomain from '../interfaces/domain';
 
 export const ValidateJoi = (schema: ObjectSchema) => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -35,7 +36,11 @@ export const Schemas = {
                 .empty(Joi.array().length(0))
                 .allow(null)
                 .default([]),
-            isActive: Joi.boolean().optional().default(true)
+            isActive: Joi.boolean().optional().default(true),
+            created_by: Joi.object<ICreatedBy>({
+                id: Joi.string().required(),
+                name: Joi.string().optional()
+            }).required()
         }),
         update: Joi.object<IEquipment>({
             name: Joi.string().required(),
@@ -63,19 +68,33 @@ export const Schemas = {
             name: Joi.string().required(),
             lastName: Joi.string().required(),
             email: Joi.string().required(),
+            username: Joi.string().required(),
             password: Joi.string().required(),
             phone: Joi.string().required(),
             registration: Joi.string().required(),
-            cpf: Joi.string().required()
+            cpf: Joi.string().required(),
+            image: Joi.object().optional(),
+            isAdmin: Joi.boolean().required()
         }),
         update: Joi.object<IUser>({
             name: Joi.string().optional(),
             lastName: Joi.string().optional(),
             email: Joi.string().optional(),
+            username: Joi.string().optional(),
             password: Joi.string().optional(),
             phone: Joi.string().optional(),
             registration: Joi.string().optional(),
-            cpf: Joi.string().optional()
+            cpf: Joi.string().optional(),
+            image: Joi.object().optional(),
+            isAdmin: Joi.boolean().required()
+        }).min(1)
+    },
+    domain: {
+        create: Joi.object<IDomain>({
+            name: Joi.string().required()
+        }),
+        update: Joi.object<IUser>({
+            name: Joi.string().optional()
         }).min(1)
     }
 };
