@@ -24,7 +24,7 @@ const createEquipment = async (req: Request, res: Response, next: NextFunction) 
         name,
         latitude,
         longitude,
-        equipmentDomain,
+        domain: equipmentDomain,
         serial,
         notes,
         files,
