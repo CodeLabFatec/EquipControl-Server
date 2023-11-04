@@ -11,6 +11,7 @@ const EquipmentSchema: Schema = new Schema(
         notes: { type: String, require: false },
         files: { type: Array, require: false },
         isActive: { type: Boolean, default: true },
+        history: { type: Array, require: false },
         created_by: { type: Object, required: true }
     },
     {

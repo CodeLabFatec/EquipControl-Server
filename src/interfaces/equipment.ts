@@ -11,6 +11,7 @@ export default interface IEquipment extends Document {
     notes?: string;
     files?: IFile[];
     isActive: boolean;
+    history: EquipmentHistory[];
     created_at: Date;
     updated_at: Date;
     created_by: ICreatedBy;
@@ -24,4 +25,12 @@ export interface IFile {
 export interface ICreatedBy {
     id: string;
     name: string;
+}
+
+export interface EquipmentHistory {
+    userId: string;
+    userName: string;
+    isActive: boolean;
+    status: string;
+    date: string;
 }
