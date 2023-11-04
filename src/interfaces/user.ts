@@ -11,6 +11,7 @@ export default interface IUser extends Document {
     cpf: string;
     image?: IFile;
     isAdmin: boolean;
+    recoverCode?: string;
 }
 
 export interface IFile {

@@ -21,6 +21,7 @@
         "jsonwebtoken": "^9.0.2",
         "mongodb": "^6.1.0",
         "mongoose": "^7.5.2",
+        "nodemailer": "^6.9.7",
         "nodemon": "^3.0.1"
     },
     "devDependencies": {
@@ -30,6 +31,7 @@
         "@types/jsonwebtoken": "^9.0.3",
         "@types/mongoose": "^5.11.97",
         "@types/node": "^20.6.3",
+        "@types/nodemailer": "^6.4.13",
         "ts-node": "^10.9.1",
         "tslib": "^2.6.2",
         "typescript": "^5.2.2"

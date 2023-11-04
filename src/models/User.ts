@@ -12,7 +12,8 @@ const UserSchema: Schema = new Schema(
         registration: { type: String, require: true },
         cpf: { type: String, require: true },
         image: { type: Object, required: false },
-        isAdmin: { type: Boolean, require: true }
+        isAdmin: { type: Boolean, require: true },
+        recoverCode: { type: String, required: false }
     },
     {
         versionKey: false,
