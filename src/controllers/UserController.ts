@@ -2,11 +2,12 @@ import Logging from '../library/Logging';
 import User from '../models/User';
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
-import bcryptjs from 'bcryptjs';
 import signJWT from '../functions/signJWT';
 import generateBiometricToken from '../functions/genereteBiometricToken';
 import { decryptPass, encryptPass } from '../functions/encryptor';
 import { config } from '../config/config';
+import { generateRandomCode } from '../functions/randomCode';
+import { sendEmail } from '../functions/sendEmail';
 
 const NAMESPACE = 'User';
 
@@ -228,4 +229,92 @@ const deleteUser = (req: Request, res: Response, next: NextFunction) => {
         );
 };
 
-export default { validateToken, generateBiometricSavedToken, login, getAllUsers, findUserById, register, updateUser, deleteUser };
+const sendRecoverPasswordCode = (req: Request, res: Response) => {
+    const { username } = req.params;
+
+    return User.find({ username })
+        .exec()
+        .then((users) => {
+            if (users.length !== 1) {
+                return res.status(404).json({
+                    message: 'User not found'
+                });
+            }
+
+            const user = users[0];
+            const code = generateRandomCode();
+
+            user.recoverCode = code;
+
+            return user
+                .save()
+                .then(async (user) => {
+                    try {
+                        await sendEmail({ to: user.email, subject: 'Recuperação de Senha', text: `Seu código para recuperação de senha da conta no aplicativo EquipControl é: ${code}` });
+                    } catch (e) {
+                        console.log(e);
+                        return res.status(500).json({ message: 'email not sent' });
+                    }
+
+                    return res.status(200).json({ success: true });
+                })
+                .catch((error) => res.status(500).json({ error }));
+        })
+        .catch((error) =>
+            res.status(500).json({
+                message: error.message,
+                error
+            })
+        );
+};
+
+const recoverPassword = async (req: Request, res: Response) => {
+    const { username } = req.params;
+    const { password, code } = req.body;
+
+    if (!username || !password || !code) return res.status(400).json({ message: 'username, password and code are required' });
+
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user) return res.status(404).json({ message: 'user not found' });
+        if (!user.recoverCode || code !== user.recoverCode) return res.status(400).json({ message: 'invalid recover code' });
+
+        const encryptedPassword = encryptPass(password, config.token.secret);
+
+        user.password = encryptedPassword;
+
+        await user.save();
+
+        return res.status(200).json({ success: true });
+    } catch (e: any) {
+        return res.status(500).json({ message: e.message, e });
+    }
+};
+
+const changePassword = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { password, newPassword } = req.body;
+
+    if (!id || !password || !newPassword) return res.status(400).json({ message: 'id, password and new password are required' });
+
+    try {
+        const user = await User.findById(id);
+
+        if (!user) return res.status(404).json({ message: 'user not found' });
+
+        const decryptedPass = decryptPass(user.password, config.token.secret);
+        if (decryptedPass !== password) return res.status(401).json({ message: 'user unauthorized' });
+
+        const encryptedNewPassword = encryptPass(newPassword, config.token.secret);
+        user.password = encryptedNewPassword;
+
+        await user.save();
+
+        return res.status(200).json({ success: true });
+    } catch (e: any) {
+        return res.status(500).json({ message: e.message, e });
+    }
+};
+
+export default { validateToken, generateBiometricSavedToken, login, getAllUsers, findUserById, register, updateUser, deleteUser, sendRecoverPasswordCode, recoverPassword, changePassword };
