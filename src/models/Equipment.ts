@@ -6,11 +6,12 @@ const EquipmentSchema: Schema = new Schema(
         name: { type: String, require: true },
         latitude: { type: String, require: true },
         longitude: { type: String, require: true },
-        domain: { type: String, require: true },
+        domain: { type: Object, require: true },
         serial: { type: String, require: true },
         notes: { type: String, require: false },
         files: { type: Array, require: false },
         isActive: { type: Boolean, default: true },
+        history: { type: Array, require: false },
         created_by: { type: Object, required: true }
     },
     {

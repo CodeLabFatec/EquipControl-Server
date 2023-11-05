@@ -2,6 +2,7 @@ import User from '../models/User';
 import Equipment from '../models/Equipment';
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
+import Domain from '../models/Domain';
 
 const createEquipment = async (req: Request, res: Response, next: NextFunction) => {
     const { name, latitude, longitude, domain, serial, notes, files, created_by } = req.body;
@@ -12,12 +13,18 @@ const createEquipment = async (req: Request, res: Response, next: NextFunction) 
         return res.status(404).json({ message: 'User not found' });
     }
 
+    const equipmentDomain = await Domain.findById(domain);
+
+    if (!equipmentDomain) {
+        return res.status(404).json({ message: 'Domain not found' });
+    }
+
     const equipment = new Equipment({
         _id: new mongoose.Types.ObjectId(),
         name,
         latitude,
         longitude,
-        domain,
+        domain: equipmentDomain,
         serial,
         notes,
         files,
@@ -68,9 +75,20 @@ const updateEquipment = (req: Request, res: Response, next: NextFunction) => {
     const equipmentId = req.params.equipmentId;
 
     return Equipment.findById(equipmentId)
-        .then((equipment) => {
+        .then(async (equipment) => {
             if (equipment) {
+                const { domain } = req.body;
+
                 equipment.set(req.body);
+
+                if (domain) {
+                    const equipmentDomain = await Domain.findById(domain);
+                    if (!equipmentDomain) {
+                        return res.status(404).json({ message: 'Domain not found' });
+                    }
+
+                    equipment.domain = equipmentDomain;
+                }
 
                 return equipment
                     .save()
@@ -108,7 +126,7 @@ const deleteEquipment = (req: Request, res: Response, next: NextFunction) => {
 
 const changeEquipmentStatus = (req: Request, res: Response, next: NextFunction) => {
     const equipmentId = req.params.equipmentId;
-    const isActive = req.body.isActive;
+    const { isActive, updated_by } = req.body;
 
     if (isActive === undefined || isActive === null) {
         return res.status(400).json({ message: 'isActive is required for this operation' });
@@ -117,7 +135,27 @@ const changeEquipmentStatus = (req: Request, res: Response, next: NextFunction) 
     return Equipment.findById(equipmentId)
         .then((equipment) => {
             if (equipment) {
+                const status = isActive ? 'ATIVO' : 'INATIVO';
+
+                const options: Intl.DateTimeFormatOptions = {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                };
+
+                const historyEntry = {
+                    userId: updated_by.userId,
+                    userName: updated_by.userName,
+                    isActive: isActive,
+                    status: status,
+                    date: new Date().toLocaleDateString('pt-BR', options)
+                };
+
                 equipment.isActive = isActive;
+                equipment.history.push(historyEntry);
 
                 return equipment
                     .save()

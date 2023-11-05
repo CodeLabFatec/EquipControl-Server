@@ -1,15 +1,17 @@
 import { Document } from 'mongoose';
 import IUser from './user';
+import IDomain from './domain';
 
 export default interface IEquipment extends Document {
     name: string;
     latitude: string;
     longitude: string;
-    domain: string;
+    domain: IDomain;
     serial: string;
     notes?: string;
     files?: IFile[];
     isActive: boolean;
+    history: EquipmentHistory[];
     created_at: Date;
     updated_at: Date;
     created_by: ICreatedBy;
@@ -23,4 +25,12 @@ export interface IFile {
 export interface ICreatedBy {
     id: string;
     name: string;
+}
+
+export interface EquipmentHistory {
+    userId: string;
+    userName: string;
+    isActive: boolean;
+    status: string;
+    date: string;
 }

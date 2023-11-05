@@ -15,5 +15,8 @@ router.get('/get/:userId', controller.findUserById);
 router.get('/getAllUsers', controller.getAllUsers);
 router.patch('/update/:userId', ValidateJoi(Schemas.user.update), controller.updateUser);
 router.delete('/delete/:userId', controller.deleteUser);
+router.post('/sendRecoverPasswordCode/:username', controller.sendRecoverPasswordCode);
+router.post('/recoverPassword/:username', controller.recoverPassword);
+router.post('/changePassword/:id', controller.changePassword);
 
 export = router;

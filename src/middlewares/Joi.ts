@@ -2,7 +2,7 @@ import Joi, { ObjectSchema } from 'joi';
 import { NextFunction, Request, Response } from 'express';
 import Logging from '../library/Logging';
 import IUser from '../interfaces/user';
-import IEquipment, { ICreatedBy } from '../interfaces/equipment';
+import IEquipment, { ICreatedBy, EquipmentHistory } from '../interfaces/equipment';
 import IDomain from '../interfaces/domain';
 
 export const ValidateJoi = (schema: ObjectSchema) => {
@@ -43,11 +43,11 @@ export const Schemas = {
             }).required()
         }),
         update: Joi.object<IEquipment>({
-            name: Joi.string().required(),
-            latitude: Joi.string().required(),
-            longitude: Joi.string().required(),
-            domain: Joi.string().required(),
-            serial: Joi.string().required(),
+            name: Joi.string().optional(),
+            latitude: Joi.string().optional(),
+            longitude: Joi.string().optional(),
+            domain: Joi.string().optional(),
+            serial: Joi.string().optional(),
             notes: Joi.string().allow('').optional(),
             files: Joi.array()
                 .items({
@@ -59,8 +59,12 @@ export const Schemas = {
                 .default([]),
             isActive: Joi.boolean().optional()
         }),
-        updateStatus: Joi.object<IEquipment>({
-            isActive: Joi.boolean().required()
+        updateStatus: Joi.object({
+            isActive: Joi.boolean().optional(),
+            updated_by: Joi.object<EquipmentHistory>({
+                userId: Joi.string().required(),
+                userName: Joi.string().required()
+            }).required()
         })
     },
     user: {
@@ -93,7 +97,7 @@ export const Schemas = {
         create: Joi.object<IDomain>({
             name: Joi.string().required()
         }),
-        update: Joi.object<IUser>({
+        update: Joi.object<IDomain>({
             name: Joi.string().optional()
         }).min(1)
     }

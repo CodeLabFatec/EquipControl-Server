@@ -2,8 +2,7 @@
 
 <h1 align="center">EquipControl - Server</h1>
 
-> **Projeto Integrador 5º Semestre ADS - 2023** <br>
-> **Status do projeto: Em Desenvolvimento**
+> **Projeto Integrador 5º Semestre ADS - 2023** <br> > **Status do projeto: Em Desenvolvimento**
 
 Esse repositório é destinado ao armazenamento do backend desenvolvido para o projeto [EquipControl](https://github.com/CodeLabFatec/EquipControl) .
 
@@ -26,10 +25,10 @@ Tecnologias utilizadas para o desenvolvimento desse backend do projeto:
 
 | Função        | Nome                             | GitHub                                                                                                                                                                                            | LinkedIn                                                                                                                                                                                                             |
 | ------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Scrum Master  | Victoria Marto Dias              | <a href="https://github.com/DiasVitoria" target="_blanck"><img src = "https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" target="_blank"></a>            | <a href="https://www.linkedin.com/in/diasvictoria/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a>               |
+| Scrum Master  | Eduardo Pereira Carvalho         | <a href="https://github.com/eduardopereiracarvalho" target="_blanck"><img src = "https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" target="_blank"></a> | <a href="https://www.linkedin.com/in/eduardo-carvalho-0a1411213/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> |
 | Product Owner | Thales de Lucca Kerber           | <a href="https://github.com/thaleskerber" target="_blanck"><img src = "https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" target="_blank"></a>           | <a href="https://www.linkedin.com/in/thaleskerber/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a>               |
 | Developer     | Lucas Nunes Duarte do Nascimento | <a href="https://github.com/Lkduarte" target="_blanck"><img src = "https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" target="_blank"></a>               | <a href="https://www.linkedin.com/in/lucas-nunes-nascimento/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a>     |
-| Developer     | Eduardo Pereira Carvalho         | <a href="https://github.com/eduardopereiracarvalho" target="_blanck"><img src = "https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" target="_blank"></a> | <a href="https://www.linkedin.com/in/eduardo-carvalho-0a1411213/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> |
+| Developer     | Victoria Marto Dias              | <a href="https://github.com/DiasVitoria" target="_blanck"><img src = "https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" target="_blank"></a>            | <a href="https://www.linkedin.com/in/diasvictoria/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a>               |
 
 <br>
 
