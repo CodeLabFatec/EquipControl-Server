@@ -6,6 +6,8 @@ import Logging from './library/Logging';
 import equipmentRoutes from './routes/Equipment';
 import userRoutes from './routes/User';
 import domainRoutes from './routes/Domain';
+import authRoutes from './routes/Auth';
+import extractJWT from './middlewares/extractJWT';
 
 const router = express();
 
@@ -52,9 +54,10 @@ const StartServer = () => {
     });
 
     /** Routes */
-    router.use('/equipment', equipmentRoutes);
-    router.use('/user', userRoutes);
-    router.use('/domain', domainRoutes);
+    router.use('/auth', authRoutes);
+    router.use('/equipment', extractJWT, equipmentRoutes);
+    router.use('/user', extractJWT, userRoutes);
+    router.use('/domain', extractJWT, domainRoutes);
 
     /** Healthcheck */
     router.get('/ping', (req, res, next) => res.status(200).json({ hello: 'world' }));
