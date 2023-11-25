@@ -2,7 +2,7 @@
 
 <h1 align="center">EquipControl - Server</h1>
 
-> **Projeto Integrador 5º Semestre ADS - 2023** <br> > **Status do projeto: Em Desenvolvimento**
+> **Projeto Integrador 5º Semestre ADS - 2023** <br> **Status do projeto: Finalizado**
 
 Esse repositório é destinado ao armazenamento do backend desenvolvido para o projeto [EquipControl](https://github.com/CodeLabFatec/EquipControl) .
 
