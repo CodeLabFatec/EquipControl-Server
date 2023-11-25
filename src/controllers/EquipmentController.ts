@@ -71,6 +71,34 @@ const listAllEquipments = (req: Request, res: Response, next: NextFunction) => {
         );
 };
 
+const listAllEquipmentsLocation = (req: Request, res: Response, next: NextFunction) => {
+    return Equipment.find()
+        .select('_id name latitude longitude isActive') // Seleciona apenas as propriedades desejadas
+        .then((equipments) => res.status(200).json({ equipments }))
+        .catch((error) =>
+            res.status(500).json({
+                message: error.message,
+                error
+            })
+        );
+};
+
+const getEquipmentHistory = (req: Request, res: Response, next: NextFunction) => {
+    const { equipmentId } = req.params;
+
+    return Equipment.findById(equipmentId)
+        .select('_id history')
+        .then(async (equipment) => {
+            equipment ? res.status(200).json({ history: equipment.history }) : res.status(404).json({ message: 'Equipment not found' });
+        })
+        .catch((error) =>
+            res.status(500).json({
+                message: error.message,
+                error
+            })
+        );
+};
+
 const updateEquipment = (req: Request, res: Response, next: NextFunction) => {
     const equipmentId = req.params.equipmentId;
 
@@ -126,7 +154,8 @@ const deleteEquipment = (req: Request, res: Response, next: NextFunction) => {
 
 const changeEquipmentStatus = (req: Request, res: Response, next: NextFunction) => {
     const equipmentId = req.params.equipmentId;
-    const { isActive, updated_by } = req.body;
+    const { isActive } = req.body;
+    const { userId, name } = res.locals.jwt;
 
     if (isActive === undefined || isActive === null) {
         return res.status(400).json({ message: 'isActive is required for this operation' });
@@ -147,8 +176,8 @@ const changeEquipmentStatus = (req: Request, res: Response, next: NextFunction) 
                 };
 
                 const historyEntry = {
-                    userId: updated_by.userId,
-                    userName: updated_by.userName,
+                    userId,
+                    userName: name,
                     isActive: isActive,
                     status: status,
                     date: new Date().toLocaleDateString('pt-BR', options)
@@ -178,4 +207,4 @@ const changeEquipmentStatus = (req: Request, res: Response, next: NextFunction) 
         );
 };
 
-export default { createEquipment, findEquipmentById, listAllEquipments, updateEquipment, deleteEquipment, changeEquipmentStatus };
+export default { createEquipment, findEquipmentById, listAllEquipments, listAllEquipmentsLocation, getEquipmentHistory, updateEquipment, deleteEquipment, changeEquipmentStatus };

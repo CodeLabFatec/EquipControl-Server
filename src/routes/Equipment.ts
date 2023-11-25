@@ -5,8 +5,10 @@ import { Schemas, ValidateJoi } from '../middlewares/Joi';
 const router = express.Router();
 
 router.post('/create', ValidateJoi(Schemas.equipment.create), controller.createEquipment);
+router.get('/getEquipmentHistory/:equipmentId', controller.getEquipmentHistory);
 router.get('/get/:equipmentId', controller.findEquipmentById);
 router.get('/get', controller.listAllEquipments);
+router.get('/getAllLocations', controller.listAllEquipmentsLocation);
 router.patch('/updateStatus/:equipmentId', ValidateJoi(Schemas.equipment.updateStatus), controller.changeEquipmentStatus);
 router.patch('/update/:equipmentId', ValidateJoi(Schemas.equipment.update), controller.updateEquipment);
 router.delete('/delete/:equipmentId', controller.deleteEquipment);

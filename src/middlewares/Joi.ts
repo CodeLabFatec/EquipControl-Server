@@ -61,10 +61,6 @@ export const Schemas = {
         }),
         updateStatus: Joi.object({
             isActive: Joi.boolean().optional(),
-            updated_by: Joi.object<EquipmentHistory>({
-                userId: Joi.string().required(),
-                userName: Joi.string().required()
-            }).required()
         })
     },
     user: {
